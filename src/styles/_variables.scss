@@ -1,0 +1,26 @@
+$background: linear-gradient(
+  #111112,
+  #13161f,
+  #151b2c,
+  #13244b,
+  #081635,
+  #263f76,
+  #28437d
+);
+$background_low_contrast: linear-gradient(
+  to bottom,
+  rgb(10, 62, 186),
+  rgb(255, 255, 255)
+);
+$background_dark_contrast: linear-gradient(
+  to bottom,
+  hsl(210, 100%, 10%),
+  hsl(210, 100%, 20%),
+  hsl(210, 100%, 30%)
+);
+$primary-color: #747474;
+$main-color: #264672;
+$background-color: #ebebeb;
+$important-color: #ff4a4a;
+$second-color: #407ac9;
+$font-family: "Jost", sans-serif;

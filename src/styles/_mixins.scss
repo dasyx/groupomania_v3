@@ -1,0 +1,10 @@
+@mixin for-tablet-portrait-up {
+    @media screen and (max-width: 768px) {
+        font-size: 2.6em;
+      }
+}
+
+@mixin form_field_warning {
+  color: #8d0000;
+  font-size: larger;
+}
