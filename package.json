@@ -24,6 +24,7 @@
   "dependencies": {
     "@babel/core": "^7.23.6",
     "@babel/eslint-parser": "^7.23.3",
+    "@vue/cli-service": "^5.0.8",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^10.7.0",
@@ -47,7 +48,6 @@
     "sequelize-auto": "^0.8.8",
     "vue": "^3.3.12",
     "vue-local-storage": "^0.1.3",
-    "@vue/cli-service": "^5.0.8",
     "vue-router": "^4.2.5",
     "vue-use": "^0.2.0",
     "vuetify": "^3.4.7",
@@ -66,6 +66,7 @@
     "eslint-plugin-vue": "^9.19.2",
     "node-sass": "^9.0.0",
     "nodemon": "^3.0.2",
+    "prisma": "^5.7.1",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "vue-template-compiler": "^2.7.15"
