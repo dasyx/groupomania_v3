@@ -8,9 +8,16 @@ prisma.$on("connected", () => {
 });
 
 async function main() {
-  // ... you will write your Prisma Client queries here
-  // For now, let's just print a success message if this function is reached
-  console.log("Prisma Client queries can be executed now.");
+  /* await prisma.Users.create({
+    data: {
+      username: "David",
+      email: "dasyx@gmail.com",
+      password: "password66",
+    },
+  }); */
+
+  const allUsers = await prisma.Users.findMany();
+  console.log(allUsers);
 }
 
 main()
