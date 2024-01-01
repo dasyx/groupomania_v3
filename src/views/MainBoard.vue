@@ -39,20 +39,22 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import store from "../modules/store.json";
-import { useStorage } from "@vueuse/core";
 import MainHeader from "@/components/MainHeader.vue";
 import NewPost from "@/components/NewPost.vue";
 import AllPosts from "@/components/AllPosts.vue";
 import { Icon } from "@iconify/vue";
+import { useRoute } from "vue-router";
 
 const registeredUsername = ref("");
 const messageContent = ref([]);
 const userLogged = ref(false);
-const userToken = useStorage("user-token", null, sessionStorage);
-const userId = useStorage("user-id", null, sessionStorage);
+
+// Vous pourriez obtenir ces valeurs en tant que props ou les gérer localement
+const userToken = ref(null);
+const userId = ref(null);
+const route = useRoute();
 
 const displayUserLogged = async () => {
-  console.log("user-id:", userId.value);
   if (!userId.value) {
     console.error("ID utilisateur non disponible");
     userLogged.value = false; // Mise à jour de l'état de connexion
@@ -60,17 +62,20 @@ const displayUserLogged = async () => {
   }
 
   try {
-    const response = await axios.get(`${store.api_host}/user/${userId.value}`, {
-      headers: {
-        Authorization: `Bearer ${userToken.value}`,
-        Accept: "application/json",
-      },
-    });
+    const response = await axios.get(
+      `${store.api_localhost}/users/${userId.value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken.value}`,
+          Accept: "application/json",
+        },
+      }
+    );
 
     console.log("Réponse de l'API:", response);
 
     if (response.status === 200 || response.status === 304) {
-      registeredUsername.value += response.data.username;
+      registeredUsername.value = response.data.username;
       userLogged.value = true; // Mise à jour de l'état de connexion
       console.log("Nom d'utilisateur enregistré:", registeredUsername.value);
     } else {
@@ -88,7 +93,11 @@ const displayUserLogged = async () => {
 };
 
 onMounted(async () => {
-  await displayUserLogged();
+  const userIdFromRoute = route.params.userId;
+  if (userIdFromRoute) {
+    userId.value = userIdFromRoute; // Mise à jour de l'userId à partir de la route si disponible
+  }
+  await displayUserLogged(); // Vous devez attendre que cette promesse soit résolue avant de continuer
   fetchPosts();
 });
 

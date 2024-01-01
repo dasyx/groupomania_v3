@@ -28,7 +28,7 @@ const routes = [
     component: UserSignup,
   },
   {
-    path: "/mainboard",
+    path: "/mainboard/:userId",
     name: "mainboard",
     component: MainBoard,
   },

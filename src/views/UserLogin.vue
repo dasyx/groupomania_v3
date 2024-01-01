@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import store from "../modules/store.json";
 import { ref } from "vue";
@@ -62,55 +62,53 @@ import { useRouter } from "vue-router";
 import { required, email, minLength } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 
-export default {
-  setup() {
-    const userForm = ref({
-      email: "",
-      password: "",
-    });
-    const submitted = ref(false);
-    const loginError = ref(null);
-    const router = useRouter();
+const userForm = ref({
+  email: "",
+  password: "",
+});
+const submitted = ref(false);
+const loginError = ref(null);
+const router = useRouter();
 
-    const rules = {
-      email: { required, email },
-      password: { required, minLength: minLength(8) },
-    };
+const rules = {
+  email: { required, email },
+  password: { required, minLength: minLength(8) },
+};
 
-    const v$ = useVuelidate(rules, userForm);
+const v$ = useVuelidate(rules, userForm);
 
-    const logValid = async () => {
-      submitted.value = true;
-      v$.value.$touch();
-      if (!v$.value.$invalid) {
-        try {
-          const response = await axios.post(
-            store.api_host + "/user/login/",
-            userForm.value
-          );
-          if (response.status === 200) {
-            sessionStorage.setItem("user-token", response.data.token);
-            sessionStorage.setItem("user-id", response.data.userId);
-            sessionStorage.setItem("user-admin", response.data.userAdmin);
-
-            // Stockage de l'URL de l'image de profil dans sessionStorage
-            if (response.data.imgProfileUrl) {
-              sessionStorage.setItem(
-                "imgProfileUrl",
-                response.data.imgProfileUrl
-              );
-            }
-
-            router.push("/mainboard");
-          }
-        } catch (error) {
-          console.error("Erreur lors de la connexion:", error);
-          loginError.value = "Erreur lors de la connexion. Veuillez réessayer.";
+const logValid = async () => {
+  submitted.value = true;
+  v$.value.$touch();
+  if (!v$.value.$invalid) {
+    try {
+      const response = await axios.post(
+        store.api_localhost + "/users/login/",
+        userForm.value
+      );
+      if (response.status === 200) {
+        console.log("Réponse de l'API:", response);
+        // Vérifiez que la réponse contient bien l'ID de l'utilisateur
+        const userId = response.data.userId; // Assurez-vous que le backend renvoie bien l'userId
+        if (!userId) {
+          throw new Error("L'ID utilisateur n'a pas pu être récupéré.");
         }
-      }
-    };
 
-    return { userForm, submitted, logValid, v$, loginError };
-  },
+        // Stockage de l'URL de l'image de profil dans sessionStorage (si nécessaire)
+        if (response.data.imgProfileUrl) {
+          sessionStorage.setItem("imgProfileUrl", response.data.imgProfileUrl);
+        }
+
+        // Redirection vers MainBoard avec l'ID utilisateur comme paramètre
+        router.push({
+          name: "mainboard",
+          params: { userId },
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion:", error);
+      loginError.value = "Erreur lors de la connexion. Veuillez réessayer.";
+    }
+  }
 };
 </script>

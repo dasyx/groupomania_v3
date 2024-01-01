@@ -138,7 +138,6 @@
 import { ref } from "vue";
 import axios from "axios";
 import store from "../modules/store.json";
-import { useStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, email } from "@vuelidate/validators";
@@ -152,10 +151,6 @@ export default {
       email: "",
       password: "",
     });
-
-    const userToken = useStorage("user-token", null, sessionStorage);
-    const userId = useStorage("user-id", null, sessionStorage);
-    const userAdmin = useStorage("user-admin", null, sessionStorage);
 
     const submitted = ref(false);
     const usernameInputValid = ref(false);
@@ -198,18 +193,9 @@ export default {
           })
           .then((response) => {
             if (response.status === 200 || response.status === 201) {
-              userToken.value = response.data.token;
-              userId.value = response.data.userId;
-              userAdmin.value = response.data.isAdmin;
-
-              console.log(
-                "Informations de l'utilisateur enregistrées dans le stockage de session:"
-              );
-              console.log("user-token:", userToken.value);
-              console.log("user-id :", userId.value);
-              console.log("user-admin:", userAdmin.value);
-
-              router.push("/mainboard");
+              console.log("Réponse de l'API:", response);
+              const userId = response.data.userId;
+              router.push({ name: "mainboard", params: { userId: userId } });
             } else {
               console.error("Erreur d'envoi de formulaire");
             }
