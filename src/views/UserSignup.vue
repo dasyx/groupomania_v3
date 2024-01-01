@@ -194,7 +194,12 @@ export default {
           .then((response) => {
             if (response.status === 200 || response.status === 201) {
               console.log("Réponse de l'API:", response);
-              const userId = response.data.userId;
+              const userId = response.data.id;
+              console.log("ID utilisateur:", userId);
+
+              // Enregistrement des données de connexion dans le sessionStorage
+              sessionStorage.setItem("userId", userId);
+
               router.push({ name: "mainboard", params: { userId: userId } });
             } else {
               console.error("Erreur d'envoi de formulaire");

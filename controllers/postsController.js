@@ -2,13 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.createPost = async (req, res) => {
-  const { title, content, authorId } = req.body;
+  const { title, content } = req.body;
   try {
     const post = await prisma.posts.create({
       data: {
         title,
         content,
-        authorId,
       },
     });
     res.status(201).json(post);

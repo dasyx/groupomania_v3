@@ -109,7 +109,7 @@ const handleCommentDeleted = (commentId) => {
 const getPostById = async (id) => {
   try {
     const response = await axios.get(
-      store.api_host + `/post/${id}`,
+      store.api_host + `/posts/${id}`,
       axiosOptions
     );
     selectedPost.value = response.data;
