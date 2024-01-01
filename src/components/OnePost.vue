@@ -80,13 +80,13 @@ const router = useRouter();
 const route = useRoute();
 const postId = route.params.id;
 
-const userLoggedId = sessionStorage.getItem("user-id"); // Récupère l'ID de l'utilisateur connecté
+const userLoggedId = sessionStorage.getItem("userId"); // Récupère l'ID de l'utilisateur connecté
 
 // Options pour les requêtes axios
 const axiosOptions = {
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + sessionStorage.getItem("user-token"),
+    Authorization: "Bearer " + sessionStorage.getItem("userId"),
   },
 };
 

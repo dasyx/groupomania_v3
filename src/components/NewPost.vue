@@ -74,7 +74,7 @@ export default {
   methods: {
     // Empeche l'affichage du formulaire de nouveau post si utilisateur non connecté
     userLogged() {
-      if (sessionStorage.getItem("user-token")) {
+      if (sessionStorage.getItem("userId")) {
         userLogged.value = true;
       }
     },
@@ -119,14 +119,14 @@ export default {
         }
         postData.append("title", this.title);
         postData.append("content", this.content);
-        postData.append("UserId", sessionStorage.getItem("user-id"));
+        postData.append("id", sessionStorage.getItem("userId"));
         console.log(...postData);
 
         //requete
         axios({
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + sessionStorage.getItem("user-token"),
+            Authorization: "Bearer " + sessionStorage.getItem("userId"),
           },
           method: "post",
           url: store.api_localhost + "/posts/newpost",
