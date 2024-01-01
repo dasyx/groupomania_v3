@@ -7,8 +7,8 @@
           <i class="fas fa-user-circle"></i>
           <p>
             {{
-              selectedPost.User
-                ? selectedPost.User.username
+              selectedPost.users
+                ? selectedPost.users.username
                 : "Utilisateur inconnu"
             }}
           </p>

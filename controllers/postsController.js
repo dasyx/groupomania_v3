@@ -2,13 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.createPost = async (req, res) => {
-  const { title, content, username } = req.body;
+  const { title, content } = req.body;
   try {
     const post = await prisma.posts.create({
       data: {
         title,
         content,
-        username,
       },
     });
     res.status(201).json(post);
@@ -39,7 +38,11 @@ exports.getPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await prisma.posts.findMany();
+    const posts = await prisma.posts.findMany({
+      /* include: {
+        users: true, // Inclure les données de l'utilisateur
+      }, */
+    });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({
