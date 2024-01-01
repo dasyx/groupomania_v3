@@ -89,10 +89,15 @@ const logValid = async () => {
       if (response.status === 200) {
         console.log("Réponse de l'API:", response);
         // Vérifiez que la réponse contient bien l'ID de l'utilisateur
-        const userId = response.data.userId; // Assurez-vous que le backend renvoie bien l'userId
+        const userId = response.data.id;
+        console.log("ID utilisateur:", userId);
+        // Assurez-vous que le backend renvoie bien l'userId
         if (!userId) {
           throw new Error("L'ID utilisateur n'a pas pu être récupéré.");
         }
+
+        // Stockage de l'ID utilisateur dans sessionStorage
+        sessionStorage.setItem("authToken", response.data.token);
 
         // Stockage de l'URL de l'image de profil dans sessionStorage (si nécessaire)
         if (response.data.imgProfileUrl) {

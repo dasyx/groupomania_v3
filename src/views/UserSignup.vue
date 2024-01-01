@@ -190,6 +190,10 @@ export default {
             username: userForm.value.username,
             email: userForm.value.email,
             password: userForm.value.password,
+
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
           .then((response) => {
             if (response.status === 200 || response.status === 201) {
