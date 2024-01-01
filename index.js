@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
 const usersRouter = require("./routes/users");
+const postsRouter = require("./routes/posts");
 
 const app = express();
 const prisma = new PrismaClient();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
 
 // Adding an event listener for when Prisma connects to the database
 prisma.$on("connected", () => {

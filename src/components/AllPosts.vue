@@ -1,5 +1,5 @@
 <template>
-  <div class="post_container" @scroll="handleScroll">
+  <div class="post_container">
     <!-- Section pour afficher tous les posts -->
     <div class="dashboard-Items" v-for="post in posts" :key="post.id">
       <router-link
@@ -9,7 +9,9 @@
         <div class="post post_link">
           <div class="post_name">
             <i class="fas fa-user-circle"></i>
-            <p>{{ post.User ? post.User.username : "Utilisateur inconnu" }}</p>
+            <p>
+              {{ post.users.username ? post.username : "Utilisateur inconnu" }}
+            </p>
           </div>
           <div class="post_main">
             <p>{{ post.title }}</p>
@@ -25,22 +27,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import store from "../modules/store.json";
 
 const posts = ref([]);
 const totalPosts = ref(0);
-const limit = 2; // Nombre de posts à charger à la fois
+//const limit = 2; // Nombre de posts à charger à la fois
 let loadingMore = ref(false);
-
-// Options pour les requêtes axios
-const axiosOptions = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + sessionStorage.getItem("user-token"),
-  },
-};
 
 // Fonction pour récupérer les posts
 const fetchPosts = async () => {
@@ -48,26 +42,30 @@ const fetchPosts = async () => {
   loadingMore.value = true;
 
   try {
-    const response = await axios.get(
-      `${store.api_host}/post?limit=${limit}&offset=${totalPosts.value}`,
-      axiosOptions
-    );
-    if (Array.isArray(response.data)) {
+    const response = await axios.get(`${store.api_localhost}/posts/allposts`);
+    posts.value = response.data;
+    if (response.status === 200 || response.status === 304) {
+      console.log("Réponse de l'API:", response);
+      // Vérifier si la réponse est un tableau
+      posts.value = [...posts.value, ...response.data];
+      totalPosts.value += response.data.length;
+    } else {
+      console.error("Erreur lors de la récupération des posts:");
+    }
+    /* if (Array.isArray(response.data)) {
       // Vérifier si la réponse est un tableau
       posts.value = [...posts.value, ...response.data];
       totalPosts.value += response.data.length;
     } else {
       console.error("Format de réponse inattendu:", response.data);
-    }
+    } */
   } catch (error) {
     console.error("Erreur lors de la récupération des posts:", error);
-  } finally {
-    loadingMore.value = false;
   }
 };
 
 // Fonction pour détecter le défilement et charger plus de posts
-const handleScroll = () => {
+/* const handleScroll = () => {
   const scrollableHeight =
     document.documentElement.scrollHeight - window.innerHeight;
   const scrolled = window.scrollY;
@@ -77,18 +75,16 @@ const handleScroll = () => {
   if (isNearBottom && !loadingMore.value && totalPosts.value < 50) {
     fetchPosts();
   }
-};
+}; */
 
 // Ajouter un écouteur d'événement pour le défilement
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
+  //window.addEventListener("scroll", handleScroll);
   fetchPosts();
 });
 
 // Supprimer l'écouteur d'événement pour le défilement
-onUnmounted(() => {
+/* onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
-});
+}); */
 </script>
-
-<!-- Votre style existant... -->

@@ -98,21 +98,7 @@ onMounted(async () => {
     userId.value = userIdFromRoute; // Mise à jour de l'userId à partir de la route si disponible
   }
   await displayUserLogged(); // Vous devez attendre que cette promesse soit résolue avant de continuer
-  fetchPosts();
 });
-
-const fetchPosts = async () => {
-  try {
-    const response = await axios.get(`${store.api_host}/post/`, {
-      headers: {
-        Authorization: `Bearer ${userToken.value}`,
-      },
-    });
-    messageContent.value = response.data;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des posts:", error);
-  }
-};
 </script>
 
 <style scoped>

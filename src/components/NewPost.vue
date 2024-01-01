@@ -129,7 +129,7 @@ export default {
             Authorization: "Bearer " + sessionStorage.getItem("user-token"),
           },
           method: "post",
-          url: store.api_host + "/post/newpost/",
+          url: store.api_localhost + "/posts/newpost",
           data: postData,
         })
           .then((response) => {
