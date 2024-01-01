@@ -1,4 +1,4 @@
 {
   "api_host": "https://groupomaniak-68273b2869e7.herokuapp.com/api",
-  "api_localhost": "http://localhost:3000/api"
+  "api_localhost": "http://localhost:3000"
 }
